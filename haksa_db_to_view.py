@@ -8,7 +8,7 @@ def haksa_db (info) :
         db = "ajou",
         charset = "utf8",
         use_unicode=True
-    )
+    )dddddddddddddddddd
     #1학기 중간/기말/성적
     if info == '1학기':
         try:
