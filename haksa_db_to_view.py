@@ -1,3 +1,6 @@
+
+#########수정 하지 마세요######################
+
 import pymysql
 
 def haksa_db (info) :
