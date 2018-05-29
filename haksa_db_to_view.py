@@ -16,12 +16,27 @@ def haksa_db (info) :
         sentence3 = 'ajou.haksa'
         sentence4 = 'idhaksa'
         numarray = [39, 72]
+        result = ''
 
         querys = "SELECT " + sentence1 +", "+ sentence2 + " from " + sentence3 + " where " + sentence4 + " = " + numarray[0] + " or " + sentence4 + " = " + numarray[1]
         cur.execute(querys)
         date = cur.fetchall()
+        for row in date :
+            result = result + str(row[0]) +"    "+str(row[1])+ "\n"
 
-        result = date[0][0] +"    "+date[0][1]+ "\n" + date[1][0] +"    "+date[1][1]
+        conn.close()
+
+    elif info == '전체학사일정':
+        sentence1 = 'date'
+        sentence2 = 'info'
+        sentence3 = 'ajou.haksa'
+        result = ''
+
+        querys = "SELECT " + sentence1 +", "+ sentence2 + " from " + sentence3
+        cur.execute(querys)
+        date = cur.fetchall()
+        for row in date :
+            result = result + str(row[0]) +"    "+str(row[1])+ "\n"
 
         conn.close()
         
