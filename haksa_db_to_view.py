@@ -8,7 +8,7 @@ def haksa_db (info) :
         db = "ajou",
         charset = "utf8",
         use_unicode=True
-    )dddddddddddddddddd
+    )
     #1학기 중간/기말/성적
     if info == '1학기':
         try:
@@ -37,5 +37,20 @@ def haksa_db (info) :
 	    	    result = cur.fetchall()
         finally:
 	        conn.close()
+
+    elif info == '방학':
+        sentence1 = 'date'
+        sentence2 = 'info'
+        sentence3 = 'ajou.haksa'
+        sentence4 = 'idhaksa'
+        numarray = [39, 72]
+
+        querys = "SELECT " + sentence1 +", "+ sentence2 + " from " + sentence3 + " where " + sentence4 + " = " + numarray[0] + " or " + sentence4 + " = " + numarray[1]
+        cur.execute(querys)
+        date = cur.fetchall()
+
+        result = date[0] + "\n" + date[1]
+
+        conn.close()
 
     return result

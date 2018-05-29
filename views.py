@@ -43,8 +43,11 @@ def message(request):
                 })
            
         #시험 및 성적 관련 일정
-        elif content_name in ('1학기','2학기','중간','중간고사','기말','기말고사','성적','성적입력','성적정정','공고'):
+        elif content_name in ('1학기','2학기','중간','중간고사','기말','기말고사','성적','성적입력','성적정정','공고','방학'):
                 info = str(haksa_db_to_view.haksa_db(content_name))
+
+
+
                 return JsonResponse({
                         'message' : {
                                 'text' : info
