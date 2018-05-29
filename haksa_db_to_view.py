@@ -21,7 +21,7 @@ def haksa_db (info) :
         cur.execute(querys)
         date = cur.fetchall()
 
-        result = date[0] + "\n" + date[1]
+        result = date[0][0] +"    "+date[0][1]+ "\n" + date[1][0] +"    "+date[1][1]
 
         conn.close()
         
