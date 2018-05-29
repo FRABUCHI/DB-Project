@@ -9,36 +9,8 @@ def haksa_db (info) :
         charset = "utf8",
         use_unicode=True
     )
-    #1학기 중간/기말/성적
-    if info == '1학기':
-        try:
-	        with conn.cursor() as cur:
-                sql = 'SELECT date, info FROM ajou.haksa where info LIKE '%중간시험%' or info LIKE '%기말시험%' or info like'%성적%'' 
-		        cur.execute(sql)
-	    	    result = cur.fetchall()
-        finally:
-	        conn.close()
-    #2학기 중간/기말/성적            
-    elif info == '2학기':
-        try:
-	        with conn.cursor() as cur:
-                sql = 'SELECT date, info FROM ajou.haksa where info LIKE '%중간시험%' or info LIKE '%기말시험%' or info like'%성적%'' 
-		        cur.execute(sql)
-	    	    result = cur.fetchall()
-        finally:
-	        conn.close()
-
-    #1/2학기 전부
-    elif info in ('중간','중간고사','기말','기말고사','성적','성적입력','성적정정','공고'):
-        try:
-	        with conn.cursor() as cur:
-                sql = 'SELECT date, info FROM ajou.haksa where info LIKE '%시험%' or info like'%성적%'' 
-		        cur.execute(sql)
-	    	    result = cur.fetchall()
-        finally:
-	        conn.close()
-
-    elif info == '방학':
+    
+    if info == '방학':
         sentence1 = 'date'
         sentence2 = 'info'
         sentence3 = 'ajou.haksa'
@@ -52,5 +24,36 @@ def haksa_db (info) :
         result = date[0] + "\n" + date[1]
 
         conn.close()
+        
+    elif info == '1학기':
+        semester = '1'+'학기'
+        test = '시험'
+        point = '성적'
+        sql = 'SELECT date, info FROM ajou.haksa where (info LIKE %s and info LIKE %s) or (info LIKE %s and info LIKE %s)'
+        arg = [semester + '%', test +'%', semester + '%', point + '%']
+        cur.execute(sql,arg)
+        result = cur.fetchall()
+        conn.close()
 
+    #2학기 중간/기말/성적            
+    elif info == '2학기':
+        semester = '2'+'학기'
+        test = '시험'
+        point = '성적'
+        sql = 'SELECT date, info FROM ajou.haksa where (info LIKE %s and info LIKE %s) or (info LIKE %s and info LIKE %s)'
+        arg = [semester + '%', test +'%', semester + '%', point + '%']
+        cur.execute(sql,arg)
+        result = cur.fetchall()
+        conn.close()
+
+    #1/2학기 전부
+    elif info in ('중간','중간고사','기말','기말고사','성적','성적입력','성적정정','공고'):
+        test = '시험'
+        point = '성적'
+        sql = 'SELECT date, info FROM ajou.haksa where info LIKE %s and info LIKE %s'
+        arg = [test +'%', point + '%']
+        cur.execute(sql,arg)
+        result = cur.fetchall()
+        conn.close()
+    
     return result
