@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import pymysql
 from . import haksa_db_to_view
+from . import haksa_sugang
 
 
 def keyboard(request):
@@ -55,19 +56,6 @@ def message(request):
                         }
                 })
 
-        #개강 일정
-        elif content_name == '개강' :
-                info = str(haksa_db_to_view.haksa_db(content_name))
-                return JsonResponse({
-                        'message' : {
-                                'text' : info
-                        },
-                        'keyboard' : {
-                                'type' : 'buttons',
-                                'buttons' : ['아주봇','처음으로']
-                        }
-                })
-
         #수강신청 관련 일정
         elif content_name in ('1학기','2학기','계절학기','예비수강','수강신청','수강정정','수강신청 포기','취득학점 포기'):
                 info = str(haksa_db_to_view.haksa_db(content_name))
@@ -78,72 +66,6 @@ def message(request):
                         'keyboard' : {
                                 'type' : 'buttons',
                                 'buttons' : ['아주봇','처음으로']
-                        }
-                })
-
-        elif content_name == '수강신청 관련' :
-                return JsonResponse({
-                        'message' : {
-                                'text' : '원하시는 정보를 선택해 주세요.'
-                        },
-                        'keyboard' : {
-                                'type' : 'buttons',
-                                'buttons' : ['예비수강','수강신청','수강정정','수강신청 포기','취득학점 포기']
-                        }
-                })
-
-        elif content_name == '예비수강' :
-                return JsonResponse({
-                        'message' : {
-                                'text' : '학기를 선택해 주세요'
-                        },
-                        'keyboard' : {
-                                'type' : 'buttons',
-                                'buttons' : ['1학기','2학기','계절학기']
-                        }
-                })
-
-        elif content_name == '수강신청' :
-                return JsonResponse({
-                        'message' : {
-                                'text' : '학기를 선택해 주세요'
-                        },
-                        'keyboard' : {
-                                'type' : 'buttons',
-                                'buttons' : ['1학기','2학기','계절학기']
-                        }
-                })
-
-        elif content_name == '수강정정' :
-                return JsonResponse({
-                        'message' : {
-                                'text' : '학기를 선택해 주세요'
-                        },
-                        'keyboard' : {
-                                'type' : 'buttons',
-                                'buttons' : ['1학기','2학기']
-                        }
-                })
-
-        elif content_name == '수강신청 포기' :
-                return JsonResponse({
-                        'message' : {
-                                'text' : '학기를 선택해 주세요'
-                        },
-                        'keyboard' : {
-                                'type' : 'buttons',
-                                'buttons' : ['1학기','2학기']
-                        }
-                })
-
-        elif content_name == '취득학점 포기' :
-                return JsonResponse({
-                        'message' : {
-                                'text' : '학기를 선택해 주세요'
-                        },
-                        'keyboard' : {
-                                'type' : 'buttons',
-                                'buttons' : ['1학기','2학기']
                         }
                 })
 
