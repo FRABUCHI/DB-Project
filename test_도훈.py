@@ -23,7 +23,7 @@ sentence2 = 'info'
 sentence3 = 'ajou.haksa'
 
 print('hello')
-info = '수강정정'
+info = '수강신청'
 #info = '1학기'
 #밑에 있는 식으로 하면 
 # ('\n2017.12.27(수)~2018.1.3(수)', '\n\n복학생 전과신청\n')
@@ -34,7 +34,11 @@ info = '수강정정'
 
 # 개강
 if info == '개강':
-    querys = "SELECT " + sentence1 + ", " + sentence2 + " from " + sentence3 + " where " + sentence2 + " like " + "'%" + "개강" + "%'"
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " FROM " + sentence3 + \
+        " WHERE " + sentence2 + " like " + "'%" + "개강" + "%'"
+
     cur.execute(querys)
     result = cur.fetchall()
     print('개강')
@@ -43,7 +47,11 @@ if info == '개강':
 
 # 예비수강
 if info == '예비수강':
-    querys = "SELECT " + sentence1 + ", " + sentence2 + " from " + sentence3 + " where " + sentence2 + " like " + "'%" + "책가방식" + "%'"
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " FROM " + sentence3 + \
+        " WHERE " + sentence2 + " like " + "'%" + "책가방식" + "%'"
+
     cur.execute(querys)
     result = cur.fetchall()
     print('예비수강')
@@ -52,7 +60,14 @@ if info == '예비수강':
 
 # 수강신청
 if info == '수강신청':
-    querys = "SELECT " + sentence1 + ", " + sentence2 + " from " + sentence3 + " where " + sentence2 + " like " + "'%" + "수강신청" + "%'"
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " FROM " + sentence3 + \
+        " WHERE " + sentence2 + \
+        " like " + "'%" + "수강신청" + "%'" + \
+        " and " + " not info like " + "'%" + "포기" + "%'" + \
+        " and " + " not info like " + "'%" + "예비" + "%'"
+
     cur.execute(querys)
     result = cur.fetchall()
     print('수강신청')
@@ -61,7 +76,11 @@ if info == '수강신청':
 
 # 수강정정
 if info == '수강정정':
-    querys = "SELECT " + sentence1 + ", " + sentence2 + " from " + sentence3 + " where " + sentence2 + " like " + "'%" + "수강정정" + "%'"
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " FROM " + sentence3 + \
+        " WHERE " + sentence2 + " like " + "'%" + "수강정정" + "%'"
+
     cur.execute(querys)
     result = cur.fetchall()
     print('수강정정')
@@ -70,7 +89,11 @@ if info == '수강정정':
 
 # 수강신청포기
 if info == '수강신청포기':
-    querys = "SELECT " + sentence1 + ", " + sentence2 + " from " + sentence3 + " where " + sentence2 + " like " + "'%" + "수강신청포기" + "%'"
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " FROM " + sentence3 + \
+        " WHERE " + sentence2 + " like " + "'%" + "수강신청포기" + "%'"
+
     cur.execute(querys)
     result = cur.fetchall()
     print('수강신청포기')
@@ -79,19 +102,14 @@ if info == '수강신청포기':
 
 # 취득학점포기
 if info == '취득학점포기':
-    querys = "SELECT " + sentence1 + ", " + sentence2 + " from " + sentence3 + " where " + sentence2 + " like " + "'%" + "취득학점포기" + "%'"
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " FROM " + sentence3 + \
+        " WHERE " + sentence2 + " like " + "'%" + "취득학점포기" + "%'"
+
     cur.execute(querys)
     result = cur.fetchall()
     print('취득학점포기')
-    for row in result:
-        print(row)
-
-# 계절학기
-if info == '계절학기':
-    querys = "SELECT " + sentence1 + ", " + sentence2 + " from " + sentence3 + " where " + sentence2 + " like " + "'%" + "계절학기" + "%'"
-    cur.execute(querys)
-    result = cur.fetchall()
-    print('계절학기')
     for row in result:
         print(row)
 
