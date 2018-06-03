@@ -11,7 +11,7 @@ import pymysql
 conn = pymysql.connect(
     host="localhost",
     user = "root",
-    passwd = "1q2w3e4r",
+    passwd = "dudwns",
     db = "ajou",
     charset = "utf8",
     use_unicode=True
@@ -23,7 +23,7 @@ cur = conn.cursor()
 
 print('hello')
 
-info = '전체'
+info = '여름방학'
 #info = '1학기'
 
 #밑에 있는 식으로 하면 
@@ -33,12 +33,11 @@ info = '전체'
 #이쁘게 결과값 나오게 다듬는거는 나중에 추합한후에 
 #카톡에서 테스트 하고 수정할게요.
 
+
 sentence1 = 'date'
 sentence2 = 'info'
 sentence3 = 'ajou.haksa'
 sentence4 = 'idhaksa'
-numarray = [39, 72]
-vacationarray = [14, 21, 24, 25, 26, 31, 33, 56, 58, 59, 70]
 
 #전체 학사 일정
 if info == '전체':
@@ -51,117 +50,140 @@ if info == '전체':
 
 #방학관련 일정 
 elif info == '방학':
-    result = ''
-
-    querys = "SELECT " + sentence1 +", "+ sentence2 + " from " + sentence3 + " where " + sentence4 + " = " + numarray[0] + " or " + sentence4 + " = " + numarray[1]
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where " + sentence2 + " LIKE " + "'%" + "방학" + "%'"
     cur.execute(querys)
-    date = cur.fetchall()
-    for row in date :
-        result = result + str(row[0]) +"    "+str(row[1])+ "\n"
-
-    conn.close()
+    result = cur.fetchall()
+    print('방학') 
+    for row in result: 
+        print(row)
 
 #방학관련 일정 
 elif info == '여름방학':
-    result = ''
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where " + sentence2 + " LIKE " + "'%" + "방학" + "%'" + \
+        " and " + " not info like " + "'%" + "동계" + "%'"
 
-    querys = "SELECT " + sentence1 +", "+ sentence2 + " from " + sentence3 + " where " + sentence4 + " = " + numarray[0]
     cur.execute(querys)
-    date = cur.fetchall()
-    for row in date :
-        result = result + str(row[0]) +"    "+str(row[1])+ "\n"
-
-    conn.close()
+    result = cur.fetchall()
+    print('여름방학') 
+    for row in result: 
+        print(row)
 
 
 #방학관련 일정 
 elif info == '겨울방학':
-    result = ''
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where " + sentence2 + " LIKE " + "'%" + "날" + "%'" + \
+        " and " + " not info like " + "'%" + "하계" + "%'"
 
-    querys = "SELECT " + sentence1 +", "+ sentence2 + " from " + sentence3 + " where " + sentence4 + " = " + numarray[1]
     cur.execute(querys)
-    date = cur.fetchall()
-    for row in date :
-        result = result + str(row[0]) +"    "+str(row[1])+ "\n"
-
-    conn.close()
+    result = cur.fetchall()
+    print('겨울방학') 
+    for row in result: 
+        print(row)
 
 #휴일관련 일정 
-elif info in ('휴일','공휴일','쉬는날'):
-    result = ''
+elif info in ('휴일', '공휴일', '쉬는날'):
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where " + sentence2 + " LIKE " + "'%" + "날" + "%'" + \
+        " UNION ALL " + \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where " + sentence2 + " LIKE " + "'%" + "절" + "%'" + \
+        " and " + " not info like " + "'%" + "계절" + "%'" + \
+        " UNION ALL " + \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where " + sentence2 + " LIKE " + "'%" + "일" + "%'" + \
+        " and " + " not info like " + "'%" + "수업" + "%'" + \
+        " and " + " not info like " + "'%" + "일절" + "%'" + \
+        " and " + " not info like " + "'%" + "보강" + "%'" + \
+        " and " + " not info like " + "'%" + "학위" + "%'" + \
+        " UNION ALL " + \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where " + sentence2 + " LIKE " + "'%" + "연휴" + "%'" + \
+        " UNION ALL " + \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where " + sentence2 + " LIKE " + "'%" + "선거" + "%'"
 
-    querys = "SELECT " + sentence1 +", "+ sentence2 + " from " + sentence3 + " where " + sentence4 + " = " + vacationarray[0] + " or " + sentence4 + " = " + vacationarray[1] + " or " + sentence4 + " = " + vacationarray[2] + " or " + sentence4 + " = " + vacationarray[3] + " or " + sentence4 + " = " + vacationarray[4] + " or " + sentence4 + " = " + vacationarray[5] + " or " + sentence4 + " = " + vacationarray[6] + " or " + sentence4 + " = " + vacationarray[7] + " or " + sentence4 + " = " + vacationarray[8] + " or " + sentence4 + " = " + vacationarray[9] + " or " + sentence4 + " = " + vacationarray[10]
     cur.execute(querys)
-    date = cur.fetchall()
-    for row in date :
-        result = result + str(row[0]) +"    "+str(row[1])+ "\n"
-
-    conn.close()
+    result = cur.fetchall()
+    print('휴일') 
+    for row in result: 
+        print(row)
 
 #행정관련 일정
-elif info in('전과','전과신청','전과 신청'):
-    result = ''
-    major = '전과'
-
-    querys = "SELECT " + sentence1 +", "+ sentence2 + " from " + sentence3 + " where " + sentence2 + " LIKE '%" + major + "%'"
+elif info in('전과', '전과신청', '전과 신청'):
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where " + sentence2 + " LIKE " + "'%" + "전과" + "%'"
     cur.execute(querys)
-    date = cur.fetchall()
-    for row in date :
-        result = result + str(row[0]) +"    "+str(row[1])+ "\n"
-
-    conn.close()
+    result = cur.fetchall()
+    print('전과') 
+    for row in result: 
+        print(row)
 
 #행정관련 일정
-elif info in('학기등록','등록','학기 등록'):
-    result = ''
-    register = '등록'
-
-    querys = "SELECT " + sentence1 +", "+ sentence2 + " from " + sentence3 + " where " + sentence2 + " LIKE '%" + register + "%'"
+elif info in('학기등록', '등록', '학기 등록'):
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where " + sentence2 + " LIKE " + "'%" + "등록" + "%'"
     cur.execute(querys)
-    date = cur.fetchall()
-    for row in date :
-        result = result + str(row[0]) +"    "+str(row[1])+ "\n"
-
-    conn.close()
+    result = cur.fetchall()
+    print('등록') 
+    for row in result: 
+        print(row)
 
 #행정관련 일정
-elif info in('전공/졸업 신청','졸업유예','졸업연기','졸업 유예','졸업 연기','전공 변경','전공 취소','복수전공','부전공','연계전공'):
-    result = ''
-    graduate = '졸업'
-
-    querys = "SELECT " + sentence1 +", "+ sentence2 + " from " + sentence3 + " where " + sentence2 + " LIKE '%" + graduate + "%'"
+elif info in('전공/졸업 신청', '졸업유예', '졸업연기', '졸업 유예', '졸업 연기', '전공 변경', '전공 취소', '복수전공', '부전공', '연계전공'):
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where " + sentence2 + " LIKE " + "'%" + "졸업" + "%'"
     cur.execute(querys)
-    date = cur.fetchall()
-    for row in date :
-        result = result + str(row[0]) +"    "+str(row[1])+ "\n"
-
-    conn.close()
+    result = cur.fetchall()
+    print('전공') 
+    for row in result: 
+        print(row)
 
 #입학/졸업 관련 일정
 elif info == '입학식':
-    result = ''
-    haksa_list = ['입학식', '오리엔테이션']
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where (" + sentence2 + " LIKE '%" + "입학식" + "%') or (" + sentence2 + " LIKE '%" + "오리엔테이션" + "%')"
 
-    querys = "SELECT " + sentence1 +", "+ sentence2 + " from " + sentence3 + " where (" + sentence2 + " LIKE '%" + haksa_list[0] + "%') or (" + sentence2 + " LIKE '%" + haksa_list[1] + "%')"
     cur.execute(querys)
-    date = cur.fetchall()
-    for row in date :
-        result = result + str(row[0]) +"    "+str(row[1])+ "\n"
-
-    conn.close()
+    result = cur.fetchall()
+    print('입학식') 
+    for row in result: 
+        print(row)
 
 #입학/졸업 관련 일정
 elif info == '졸업식':
-    result = ''
-    diploma = '학위'
-
-    querys = "SELECT " + sentence1 +", "+ sentence2 + " from " + sentence3 + " where " + sentence2 + " LIKE '%" + diploma + "%'"
+    querys = \
+        "SELECT " + sentence1 + ", " + sentence2 + \
+        " from " + sentence3 + \
+        " where " + sentence2 + " LIKE " + "'%" + "학위" + "%'"
+    
     cur.execute(querys)
-    date = cur.fetchall()
-    for row in date :
-        result = result + str(row[0]) +"    "+str(row[1])+ "\n"
-
-    conn.close()
+    result = cur.fetchall()
+    print('졸업식') 
+    for row in result: 
+        print(row)
 
 #1학기 중간/기말/성적  
 elif info == '1학기':
