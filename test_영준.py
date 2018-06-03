@@ -11,7 +11,7 @@ import pymysql
 conn = pymysql.connect(
     host="localhost",
     user = "root",
-    passwd = "alffpsldja1!",
+    passwd = "dudwns",
     db = "ajou",
     charset = "utf8",
     use_unicode=True
