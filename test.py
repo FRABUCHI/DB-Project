@@ -3,27 +3,29 @@ import pymysql
     
 def haksa_db (info) :
     conn = pymysql.connect(
-        host="localhost",
-        user = "root",
-        passwd = "dudwns",
-        db = "test",
+        host="13.209.43.217",
+        user = "soyeon",
+        passwd = "1q2w3e4r",
+        db = "ajou",
         charset = "utf8",
         use_unicode=True
     )
 
     cur = conn.cursor()
-  
+
     sentence1 = 'date'
     sentence2 = 'info'
-    sentence3 = 'test.haksa'
+    sentence3 = 'ajou.haksa'
     sentence4 = 'idhaksa'
 
     #전체 학사 일정
     if info in ('전체','전체학사일정','학사력'):
+        result = info + " 일정표" + '\n'
         sql = "select date, info from haksa"
         cur.execute(sql)
-        result = cur.fetchall()
-
+        date = cur.fetchall()
+        for row in range(0, len(date)):
+            result += '\n\n' + date[row][0].strip('\n') + '\n' + date[row][1].strip('\n')
 
     #########################################################################################3
     #1학기 중간/기말/성적  
@@ -293,4 +295,4 @@ def haksa_db (info) :
 
     return result
 
-print(haksa_db('방학'))
+print(haksa_db('전체'))
