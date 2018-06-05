@@ -5,15 +5,13 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import pymysql
 from . import haksa_db_to_view
-from . import club_db_to_view
-from . import classic_list
-from . import day_list
+#from . import haksa_sugang
+#from . import haksa_club
 
-startButton = ['인기검색어','학사일정','음식점','동아리','아주봇']
-endButton = ['아주봇','처음으로']
-clubButton = ['중앙동아리','소학회']
+startButton = ['학사일정', '음식점', '동아리', '아주봇']
+endButton = ['아주봇', '처음으로']
 
-clubButton = ['중앙동아리', '소학회', '학과', '대학', '관심사','아주봇','처음으로']
+clubButton = ['중앙동아리', '소학회', '학과', '대학', '관심사']
 majorButton = ['e-비즈니스 학과', '건설시스템공학과', '건축학과', '경영학과', '경제학과', '교통시스템공학과', '국어국문학과',
                '금융공학과', '기계공학과', '문화컨텐츠학과', '물리학과', '미디어학과', '불어불문학과', '사이버보안학과',
                '사학과', '사회학과', '산업공학과', '생명과학과', '소프트웨어학과', '수학과', '스포츠레저학과', '신소재공학과',
@@ -29,13 +27,13 @@ hobbyButton = \
          '탁구', '태권도', '테니스', '토론', '패러글라이딩', '풍물', '합창', '흑인음악', '힙합']
 hobbyButton2 = \
         ['MIDI ', '검도 ', '광고 ', '권투 ', '기타 ', '농구 ', '등산 ', '로봇 ', '록 ',
-         '미술 ', '바둑 ', '발명 ', '발표 ', '배드민턴 ', '볼링 ', '봉사 ', '사진 ',
-         '서예 ', '스노우보드 ', '스쿼시 ', '시사 ', '실용음악 ', '야구 ', '야학 ', '연극 ', '영상 ', '영어 ',
-         '영화 ', '유도 ', '음악 ', '자전거 ', '종교 ', '천문 ', '축구 ', '컴퓨터 ',
-         '탁구 ', '태권도 ', '테니스 ', '패러글라이딩 ', '풍물 ', '합창 ', '흑인음악 ', '힙합 ']
+         '미술 ', '바둑 ', '발명 ', '발표 ', '배드민턴 ', '볼링 ', '봉사 ', '사진',
+         '서예', '스노우보드', '스쿼시', '시사', '실용음악', '야구', '야학', '연극', '영상', '영어',
+         '영화', '유도', '음악', '자전거', '종교', '천문', '축구', '컴퓨터',
+         '탁구', '태권도', '테니스', '패러글라이딩', '풍물', '합창', '흑인음악', '힙합']
+
 
 def keyboard(request):
-        day_list.init()
         return JsonResponse({
                 'type' : 'buttons',
                 'buttons' : startButton
@@ -47,29 +45,12 @@ def message(request):
         json_str = ((request.body).decode('utf-8'))
         json_data = json.loads(json_str)
         content_name = json_data['content']
-
-        rank = str(classic_list.pull())
-
-        day_rank = str(day_list.pull)
-              
-#############################################################################################################
-        if content_name == '인기검색어' :
-                return JsonResponse({
-                        'message' : {
-                                'text' : rank + '\n\n' + '\n' + day_rank                      
-                        },
-                        'keyboard' : {
-                                'type' : 'buttons',
-                                'buttons' : endButton
-                        }
-                })
+        
 #############################################################################################################
         if content_name == '학사일정' :
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + '어떤 일정이 궁금하세요?'
+                                'text' : '어떤 일정이 궁금하세요?'
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -81,11 +62,9 @@ def message(request):
         #전체 학사 일정
         if content_name in ('전체','전체학사일정','학사력'): 
               info = str(haksa_db_to_view.haksa_db(content_name))
-              classic_list.push(content_name)
-              day_list.push(content_name)
               return JsonResponse({
                       'message' : {
-                              'text' : rank + '\n\n' + info
+                              'text' : info
                       },
                       'keyboard' : {
                               'type' : 'buttons',
@@ -96,11 +75,9 @@ def message(request):
 
         #시험 및 성적 관련 일정    
         if content_name == '시험' :
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + '학기를 선택해주세요.'
+                                'text' : '학기를 선택해주세요.'
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -111,11 +88,9 @@ def message(request):
         # 시험 및 성적 관련 일정 
         if content_name in ('1학기','2학기','중간','중간고사','기말','기말고사','성적','성적입력','성적정정','공고'):
               info = str(haksa_db_to_view.haksa_db(content_name))
-              classic_list.push(content_name)
-              day_list.push(content_name)
               return JsonResponse({
                       'message' : {
-                              'text' : rank + '\n\n' + info
+                              'text' : info
                       },
                       'keyboard' : {
                               'type' : 'buttons',
@@ -126,11 +101,9 @@ def message(request):
 
         #수강신청 관련 일정
         elif content_name == '수강신청 관련':
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + '수강 관련 목록입니다.'
+                                'text' : '수강 관련 목록입니다.'
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -139,13 +112,11 @@ def message(request):
                 })
            
         #수강신청 관련 일정
-        elif content_name in ('예비수강','수강신청','수강정정','수강신청 포기','취득학점 포기'):
+        elif content_name in ('예비수강', '수강신청', '수강정정', '수강신청 포기', '취득학점 포기'):
                 info = str(haksa_db_to_view.haksa_db(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + info
+                                'text' : info
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -156,11 +127,9 @@ def message(request):
         # 방학
         elif content_name in ('방학','여름방학','겨울방학'):
                 info = str(haksa_db_to_view.haksa_db(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + info
+                                'text' : info
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -171,11 +140,9 @@ def message(request):
         # 휴일
         elif content_name in ('휴일','공휴일','쉬는날'):
                 info = str(haksa_db_to_view.haksa_db(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + info
+                                'text' : info
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -186,11 +153,9 @@ def message(request):
 #############################################################################################################
         # 입학식/졸업식
         elif content_name == '입학/졸업':
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + '입학/졸업 관련 목록입니다.'
+                                'text' : '입학/졸업 관련 목록입니다.'
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -200,11 +165,9 @@ def message(request):
         # 입학식/졸업식
         elif content_name in ('입학식','졸업식','입학식(신·편입)','졸업식(학위 수여식)'):
                 info = str(haksa_db_to_view.haksa_db(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + info
+                                'text' : info
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -215,11 +178,9 @@ def message(request):
         #개강 일정
         elif content_name in ('개강','개강날짜','개강일정'): 
                 info = str(haksa_db_to_view.haksa_db(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + info
+                                'text' : info
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -229,11 +190,9 @@ def message(request):
 #############################################################################################################
         #행정신청 관련 일정
         elif content_name == '행정신청':
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + '행정신청 관련 목록입니다.'
+                                'text' : '행정신청 관련 목록입니다.'
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -244,11 +203,9 @@ def message(request):
         #행정신청 관련 일정
         elif content_name in ('전과','전과신청','전과 신청'):
                 info = str(haksa_db_to_view.haksa_db(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + info
+                                'text' : info
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -259,11 +216,9 @@ def message(request):
         #행정신청 관련 일정
         elif content_name in('학기등록','등록','학기 등록'):
                 info = str(haksa_db_to_view.haksa_db(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + info
+                                'text' : info
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -273,11 +228,9 @@ def message(request):
 
         elif content_name in ('전공/졸업 신청','졸업유예','졸업연기','졸업 유예','졸업 연기','전공 변경','전공 취소','복수전공','부전공','연계전공'):
                 info = str(haksa_db_to_view.haksa_db(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + info
+                                'text' : info
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -286,11 +239,9 @@ def message(request):
                 })
 #############################################################################################################
         if content_name == '동아리':
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message': {
-                                'text': rank + '\n\n' + '동아리를 검색하실 방법을 선택해주세요.'
+                                'text': '동아리를 검색하실 방법을 선택해주세요.'
                         },
                         'keyboard': {
                                 'type': 'buttons',
@@ -299,25 +250,21 @@ def message(request):
                 })
 
         if content_name == '중앙동아리':
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message': {
-                                'text': rank + '\n\n' + '중앙동아리 내에서 검색'
+                                'text': '중앙동아리 내에서 검색'
                         },
                         'keyboard': {
                                 'type': 'buttons',
-                                'buttons': ['중앙동아리 전체', '관심사별 조회','아주봇','처음으로']
+                                'buttons': ['중앙동아리 전체', '관심사별 조회']
                         }
                 })
 
         if content_name == '중앙동아리 전체':
-                info = str(club_db_to_view.club(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
+                info = str(haksa_db_to_view.haksa_db(content_name))
                 return JsonResponse({
                         'message': {
-                                'text': rank + '\n\n' + info
+                                'text': info
                         },
                         'keyboard': {
                                 'type': 'buttons',
@@ -326,11 +273,9 @@ def message(request):
                 })
 
         if content_name == '관심사별 조회':
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message': {
-                                'text': rank + '\n\n' + '중동 내 관심사를 선택해 주세요'
+                                'text': '중동 내 관심사를 선택해 주세요'
                         },
                         'keyboard': {
                                 'type': 'buttons',
@@ -340,12 +285,10 @@ def message(request):
 
         # 중동 - 관심사별 조회 선택시
         elif content_name in hobbyButton2:
-                info = str(club_db_to_view.club(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
+                info = str(haksa_db_to_view.haksa_db(content_name))
                 return JsonResponse({
                         'message': {
-                                'text': rank + '\n\n' + info
+                                'text': info
                         },
                         'keyboard': {
                                 'type': 'buttons',
@@ -354,12 +297,10 @@ def message(request):
                 })
 
         if content_name == '소학회':
-                info = str(club_db_to_view.club(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
+                info = str(haksa_db_to_view.haksa_db(content_name))
                 return JsonResponse({
                         'message': {
-                                'text': rank + '\n\n' + info
+                                'text': info
                         },
                         'keyboard': {
                                 'type': 'buttons',
@@ -368,11 +309,9 @@ def message(request):
                 })
 
         if content_name == '학과':
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message': {
-                                'text': rank + '\n\n' + '학과를 선택해 주세요'
+                                'text': '학과를 선택해 주세요'
                         },
                         'keyboard': {
                                 'type': 'buttons',
@@ -382,12 +321,10 @@ def message(request):
 
         # 학과 선택시
         elif content_name in majorButton:
-                info = str(club_db_to_view.club(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
+                info = str(haksa_db_to_view.haksa_db(content_name))
                 return JsonResponse({
                         'message': {
-                                'text': rank + '\n\n' + info
+                                'text': info
                         },
                         'keyboard': {
                                 'type': 'buttons',
@@ -396,11 +333,9 @@ def message(request):
                 })
 
         if content_name == '대학':
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message': {
-                                'text': rank + '\n\n' + '대학을 선택해 주세요'
+                                'text': '대학을 선택해 주세요'
                         },
                         'keyboard': {
                                 'type': 'buttons',
@@ -410,12 +345,10 @@ def message(request):
 
         # 대학 선택시
         elif content_name in univButton:
-                info = str(club_db_to_view.club(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
+                info = str(haksa_db_to_view.haksa_db(content_name))
                 return JsonResponse({
                         'message': {
-                                'text': rank + '\n\n' + info
+                                'text': info
                         },
                         'keyboard': {
                                 'type': 'buttons',
@@ -424,11 +357,9 @@ def message(request):
                 })
 
         if content_name == '관심사':
-                classic_list.push(content_name)
-                day_list.push(content_name)
                 return JsonResponse({
                         'message': {
-                                'text': rank + '\n\n' + '관심사를 선택해 주세요'
+                                'text': '관심사를 선택해 주세요'
                         },
                         'keyboard': {
                                 'type': 'buttons',
@@ -438,12 +369,10 @@ def message(request):
 
         # 관심사 선택시
         elif content_name in hobbyButton:
-                info = str(club_db_to_view.club(content_name))
-                classic_list.push(content_name)
-                day_list.push(content_name)
+                info = str(haksa_db_to_view.haksa_db(content_name))
                 return JsonResponse({
                         'message': {
-                                'text': rank + '\n\n' + info
+                                'text': info
                         },
                         'keyboard': {
                                 'type': 'buttons',
@@ -454,7 +383,7 @@ def message(request):
         if content_name == '아주봇' :
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + '아주대에 관해 모르는거 빼고 다 알아요!'
+                                'text' : '아주대에 관해 모르는거 빼고 다 알아요!'
                         },
                         'keyboard' : {
                                 'type' : 'text'
@@ -465,7 +394,7 @@ def message(request):
         if content_name == '처음으로' :
                 return JsonResponse({
                 	'message' : {
-                		'text' : rank + '\n\n' + '처음으로 돌아갑니다.'
+                		'text' : '처음으로 돌아갑니다.'
                 	},
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -476,7 +405,7 @@ def message(request):
         else :
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + '아주봇이 알아듣지 못 했습니다. 다시 입력해주세요.'
+                                'text' : '아주봇이 알아듣지 못 했습니다. 다시 입력해주세요.'
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
