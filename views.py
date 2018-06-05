@@ -9,6 +9,7 @@ from . import haksa_db_to_view
 
 startButton = ['학사일정','음식점','동아리','아주봇']
 endButton = ['아주봇','처음으로']
+clubButton = ['중앙동아리','소학회']
 
 
 def keyboard(request):
@@ -216,6 +217,37 @@ def message(request):
                         }
                 })
 #############################################################################################################
+        if content_name == '동아리' :
+                return JsonResponse({
+                        'message' : {
+                                'text' : '동아리를 선택해주세요.'
+                        },
+                        'keyboard' : {
+                                'type' : clubButton
+                        }
+                })
+
+        if content_name == '중앙동아리' :
+                return JsonResponse({
+                        'message' : {
+                                'text' : '아주대에 관해 모르는거 빼고 다 알아요!'
+                        },
+                        'keyboard' : {
+                                'type' : startButton
+                        }
+                })
+
+        if content_name == '소학회' :
+                return JsonResponse({
+                        'message' : {
+                                'text' : '아주대에 관해 모르는거 빼고 다 알아요!'
+                        },
+                        'keyboard' : {
+                                'type' : startButton
+                        }
+                })
+#############################################################################################################
+        
         if content_name == '아주봇' :
                 return JsonResponse({
                         'message' : {
