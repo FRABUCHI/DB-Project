@@ -19,14 +19,15 @@ def haksa_db (info) :
     sentence1 = 'date'
     sentence2 = 'info'
     sentence3 = 'ajou.haksa'
-    sentence4 = 'idhaksa'
 
     #전체 학사 일정
     if info in ('전체','전체학사일정','학사력'):
         result = info + " 일정표" + '\n'
         sql = "select date, info from haksa"
         cur.execute(sql)
-        result = cur.fetchall()
+        date = cur.fetchall()
+        for row in range(0, len(date)):
+            result += '\n\n' + date[row][0].strip('\n') + '\n' + date[row][1].strip('\n')
 
 
     #########################################################################################3
