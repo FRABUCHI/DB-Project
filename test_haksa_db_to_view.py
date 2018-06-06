@@ -1,7 +1,10 @@
+
+#########수정 하지 마세요######################
+
 import pymysql
-  
-    
+
 def haksa_db (info) :
+
     conn = pymysql.connect(
         host="13.209.43.217",
         user = "soyeon",
@@ -12,25 +15,25 @@ def haksa_db (info) :
     )
 
     cur = conn.cursor()
-
+  
     sentence1 = 'date'
     sentence2 = 'info'
     sentence3 = 'ajou.haksa'
-    sentence4 = 'idhaksa'
 
     #전체 학사 일정
     if info in ('전체','전체학사일정','학사력'):
-        result = info + " 일정표" + '\n'
+        result = '※ ' + info + " 일정표 ※"
         sql = "select date, info from haksa"
         cur.execute(sql)
         date = cur.fetchall()
         for row in range(0, len(date)):
             result += '\n\n' + date[row][0].strip('\n') + '\n' + date[row][1].strip('\n')
 
+
     #########################################################################################3
     #1학기 중간/기말/성적  
-    elif info == '1학기':
-        result = info + " 일정표" + '\n'
+    elif info in('1학기'):
+        result = '※ ' + info + " 일정표 ※"
         sql = '''
         SELECT date, info 
         FROM haksa 
@@ -42,8 +45,8 @@ def haksa_db (info) :
             result += '\n\n' + date[row][0].strip('\n') + '\n' + date[row][1].strip('\n')
         
     #2학기 중간/기말/성적  
-    elif info == '2학기':
-        result = info + " 일정표" + '\n'
+    elif info in('2학기'):
+        result = '※ ' + info + " 일정표 ※"
         sql = '''
         SELECT date, info 
         FROM haksa 
@@ -56,7 +59,7 @@ def haksa_db (info) :
 
     #1학기/2학기 중간/기말/성적
     elif info in ('중간','중간고사','기말','기말고사','성적','성적입력','성적정정','공고'):
-        result = info + " 일정표" + '\n'
+        result = '※ ' + info + " 일정표 ※"
         sql = '''
         SELECT date, info 
         FROM haksa 
@@ -69,8 +72,8 @@ def haksa_db (info) :
     
     #########################################################################################3
     # 개강
-    if info == '개강':
-        result = info + " 일정표" + '\n'
+    elif info == '개강':
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " FROM " + sentence3 + \
@@ -83,8 +86,8 @@ def haksa_db (info) :
 
     #########################################################################################3
     # 예비수강
-    if info == '예비수강':
-        result = info + " 일정표" + '\n'
+    elif info == '예비수강':
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " FROM " + sentence3 + \
@@ -96,8 +99,8 @@ def haksa_db (info) :
             result += '\n\n' + date[row][0].strip('\n') + '\n' + date[row][1].strip('\n')
 
     # 수강신청
-    if info == '수강신청':
-        result = info + " 일정표" + '\n'
+    elif info == '수강신청':
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " FROM " + sentence3 + \
@@ -112,8 +115,8 @@ def haksa_db (info) :
             result += '\n\n' + date[row][0].strip('\n') + '\n' + date[row][1].strip('\n')
 
     # 수강정정
-    if info == '수강정정':
-        result = info + " 일정표" + '\n'
+    elif info == '수강정정':
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " FROM " + sentence3 + \
@@ -125,8 +128,8 @@ def haksa_db (info) :
             result += '\n\n' + date[row][0].strip('\n') + '\n' + date[row][1].strip('\n')
 
     # 수강신청포기
-    if info == '수강신청 포기':
-        result = info + " 일정표" + '\n'
+    elif info == '수강신청 포기':
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " FROM " + sentence3 + \
@@ -138,8 +141,8 @@ def haksa_db (info) :
             result += '\n\n' + date[row][0].strip('\n') + '\n' + date[row][1].strip('\n')
 
     # 취득학점포기
-    if info == '취득학점 포기':
-        result = info + " 일정표" + '\n'
+    elif info == '취득학점 포기':
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " FROM " + sentence3 + \
@@ -153,7 +156,7 @@ def haksa_db (info) :
 ########################################################################################################
     #방학관련 일정 
     elif info == '방학':
-        result = info + " 일정표" + '\n'
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " from " + sentence3 + \
@@ -165,7 +168,7 @@ def haksa_db (info) :
 
     #방학관련 일정 
     elif info == '여름방학':
-        result = info + " 일정표" + '\n'
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " from " + sentence3 + \
@@ -180,7 +183,7 @@ def haksa_db (info) :
 
     #방학관련 일정 
     elif info == '겨울방학':
-        result = info + " 일정표" + '\n'
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " from " + sentence3 + \
@@ -195,7 +198,7 @@ def haksa_db (info) :
 ########################################################################################################
     #휴일관련 일정 
     elif info in ('휴일', '공휴일', '쉬는날'):
-        result = info + " 일정표" + '\n'
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " from " + sentence3 + \
@@ -230,7 +233,7 @@ def haksa_db (info) :
 ########################################################################################################
     #행정관련 일정
     elif info in('전과', '전과신청', '전과 신청'):
-        result = info + " 일정표" + '\n'
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " from " + sentence3 + \
@@ -242,7 +245,7 @@ def haksa_db (info) :
 
     #행정관련 일정
     elif info in('학기등록', '등록', '학기 등록'):
-        result = info + " 일정표" + '\n'
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " from " + sentence3 + \
@@ -254,7 +257,7 @@ def haksa_db (info) :
 
     #행정관련 일정
     elif info in('전공/졸업 신청', '졸업유예', '졸업연기', '졸업 유예', '졸업 연기', '전공 변경', '전공 취소', '복수전공', '부전공', '연계전공'):
-        result = info + " 일정표" + '\n'
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " from " + sentence3 + \
@@ -267,7 +270,7 @@ def haksa_db (info) :
 ########################################################################################################
     #입학/졸업 관련 일정
     elif info in ('입학식','입학식(신·편입)'):
-        result = info + " 일정표" + '\n'
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " from " + sentence3 + \
@@ -280,7 +283,7 @@ def haksa_db (info) :
 
     #입학/졸업 관련 일정
     elif info in ('졸업식','졸업식(학위 수여식)'):
-        result = info + " 일정표" + '\n'
+        result = '※ ' + info + " 일정표 ※"
         querys = \
             "SELECT " + sentence1 + ", " + sentence2 + \
             " from " + sentence3 + \
@@ -290,9 +293,25 @@ def haksa_db (info) :
         date = cur.fetchall()
         for row in range(0, len(date)):
             result += '\n\n' + date[row][0].strip('\n') + '\n' + date[row][1].strip('\n')
+     
+    else :
+        result = '※ ' + info + " 일정표 ※"
+        querys = \
+            "SELECT " + sentence1 + ", " + sentence2 + \
+            " from " + sentence3 + \
+            " where " + sentence2 + " LIKE " + "'%" + info + "%'"
+        
+        cur.execute(querys)
+        date = cur.fetchall()
+        if len(date) > 0 :
+            for row in range(0, len(date)):
+                result += '\n\n' + date[row][0].strip('\n') + '\n' + date[row][1].strip('\n')
+        else :
+            result = '해당 검색 결과가 없어요ㅜㅜ'
+    
 
     conn.close()
 
     return result
 
-print(haksa_db('전체'))
+print(haksa_db('1학기'))
