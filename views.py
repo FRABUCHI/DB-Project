@@ -9,7 +9,7 @@ from . import club_db_to_view
 from . import classic_list
 from . import day_list
 
-startButton = ['인기검색어','학사일정','음식점','동아리','아주봇']
+startButton = ['오늘의 인기검색어','학사일정','동아리','아주봇']
 endButton = ['아주봇','처음으로']
 clubButton = ['중앙동아리','소학회']
 
@@ -50,13 +50,13 @@ def message(request):
 
         rank = str(classic_list.pull())
 
-        day_rank = str(day_list.pull)
+        day_rank = str(day_list.pull())
               
 #############################################################################################################
-        if content_name == '인기검색어' :
+        if content_name in ('오늘의 인기검색어','인기검색어','인기 검색어') :
                 return JsonResponse({
                         'message' : {
-                                'text' : rank + '\n\n' + '\n' + day_rank                      
+                                'text' : day_rank + '\n\n' + '\n' + rank                      
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
@@ -474,9 +474,13 @@ def message(request):
                 })              
 
         else :
-                return JsonResponse({
+                info = str(haksa_db_to_view.haksa_db(content_name))
+                info2 = str(club_db_to_view.club(content_name))
+                classic_list.push(content_name)
+                day_list.push(content_name)
+                return JsonResponse({ 
                         'message' : {
-                                'text' : rank + '\n\n' + '아주봇이 알아듣지 못 했습니다. 다시 입력해주세요.'
+                                'text' : rank + '\n\n' + info + '\n' + info2
                         },
                         'keyboard' : {
                                 'type' : 'buttons',
